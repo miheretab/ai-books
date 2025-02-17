@@ -14,6 +14,32 @@ Books::setBook(new Book(2, "Harry Potter", "J. K. Rowling", 1997), 2);
 Books::setBook(new Book(3, "The Great Gatsby", "F. Scott Fitzgerald", 1925), 3);
 Books::setBook(new Book(4, "Think and Grow Rich", "Napoleon Hill", 1937), 4);
 
+//sample user db to save
+$users = [];
+
+/*
+** `GET /api/signup` - signup to get access.
+*/
+$router->addRoute('POST', '/api/signup', function () use ($router) {
+    //username and password should be saved here
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (isset($input['username']) && isset($input['password'])) {
+        $users[] = ["username" => $input["username"], "password" => $input["password"]];
+    }
+    //generate token here
+    $router->handleLoginRequest($input);
+    return;
+});
+
+/*
+** `GET /api/login` - authentication to get access token.
+*/
+$router->addRoute('POST', '/api/login', function () use ($router) {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $router->handleLoginRequest($input);
+    return;
+});
+
 /*
 ** `GET /api/books` - Retrieve a list of all books.
 */
