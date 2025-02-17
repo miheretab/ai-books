@@ -24,7 +24,7 @@ class Books {
         if ($id) {
             Books::$books[$id] = $book;
         } else {
-            Books::$books[] = $book;
+            Books::$books = Books::$books + [$book->id => $book];
         }
     }
 

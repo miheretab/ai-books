@@ -15,12 +15,19 @@ class Book {
         $this->publishedYear = $publishedYear;
     }
 
+    function getTitle() {
+        return $this->title;
+    }
+
     /**
     * add a book with $title, $author, $publishedYear
     */
     function add($title, $author, $publishedYear) {
-        $id = Books::total() + 1;//incremental
-        Books::setBook(new Book($id, $title, $author, $publishedYear));
+        $this->id = Books::total() + 1;//incremental
+        $this->title = $title;
+        $this->author = $author;
+        $this->publishedYear = $publishedYear;
+        Books::setBook($this);
     }
 
     /**
