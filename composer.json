@@ -14,5 +14,14 @@
             "email": "mihrtab@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "deepseek-php/deepseek-php-client": "^2.0",
+        "symfony/http-client": "^6.4",
+        "nyholm/psr7": "^1.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }

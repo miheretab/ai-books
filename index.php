@@ -1,8 +1,11 @@
 <?php
 
+use DeepSeek\DeepSeekClient;
 include_once "router.php";
 include_once "Book.php";
 include_once "Books.php";
+include_once "AI.php";
+
 $router = new Router();
 
 //initiate book array with existing sample books
@@ -76,9 +79,43 @@ $router->addRoute('PUT', '/api/books/{id}', function ($id) {
 */
 $router->addRoute('DELETE', '/api/books/{id}', function ($id) {
     $book = Books::getBook($id);
+
+    if (!$book) {
+        echo json_encode("No book found.");
+        return;
+    }
+
     $book->remove();
 
     echo json_encode("Book removed successfully");
+    return;
+});
+
+/**
+* `POST /api/books/generate-summary` - get generated summary from AI.
+*/
+$router->addRoute('POST', '/api/books/generate-summary', function () {
+    $request = json_decode(file_get_contents("php://input"), true);
+    if (!isset($request['book_id'])) {
+        echo json_encode("Book id is required");
+        return;
+    }
+
+    $id = $request['book_id'];
+
+    $book = Books::getBook($id);
+    if (!$book) {
+        echo json_encode("No book found.");
+        return;
+    }
+
+    //here generate with the help of AI
+    $summary = AI::getSummary($book);
+    /*$summary = DeepSeekClient::build('sk-1cd9ea00e1b74f1ca02c83d9769fc06e')
+        ->query('Summarize ' . $book->getTitle() . ' Book by ' . $book->getAuthor() . ' published at ' . $book->getPublishedYear())
+        ->run();*/
+
+    echo json_encode(["book" => $book->jsonSerialize(), "summary" => $summary]);
     return;
 });
 

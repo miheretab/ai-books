@@ -19,6 +19,14 @@ class Book {
         return $this->title;
     }
 
+    function getAuthor() {
+        return $this->author;
+    }
+
+    function getPublishedYear() {
+        return $this->publishedYear;
+    }
+
     /**
     * add a book with $title, $author, $publishedYear
     */
