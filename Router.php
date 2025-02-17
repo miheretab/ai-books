@@ -10,9 +10,7 @@ class Router {
     public function matchRoute() {
         $method = $_SERVER['REQUEST_METHOD'];
         $url = $_SERVER['REQUEST_URI'];
-        //var_dump($url);var_dump($method);
         if (isset($this->routes[$method])) {
-            //var_dump($this->routes[$method]);
             foreach ($this->routes[$method] as $routeUrl => $target) {
                 // Use named subpatterns in the regular expression pattern to capture each parameter value separately
                 $pattern = preg_replace('/\/{([^\/]+)\}/', '/(?P<$1>[^/]+)', $routeUrl);
