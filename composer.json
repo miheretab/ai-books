@@ -16,9 +16,10 @@
     ],
     "require": {
         "firebase/php-jwt": "^5.0",
-        "openai-php/client": "^0.10.3",
         "symfony/http-client": "^6.4",
-        "nyholm/psr7": "^1.8"
+        "nyholm/psr7": "^1.8",
+        "guzzlehttp/guzzle": "^7.9",
+        "gemini-api-php/client": "^1.7"
     },
     "config": {
         "allow-plugins": {

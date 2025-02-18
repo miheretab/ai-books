@@ -1,63 +1,35 @@
 <?php
 
+require './vendor/autoload.php';
+
 include_once 'Book.php';
 
-Class AI {
+use GeminiAPI\Client;
+use GeminiAPI\Resources\ModelName;
+use GeminiAPI\Resources\Parts\TextPart;
+
+class AI {
     
-    static function getSummary(Book $book, $url = "https://api.deepseek.com/chat/completions", $apiKey = "sk-1cd9ea00e1b74f1ca02c83d9769fc06e") {
-        
-        $postVar = [
-            "model" =>  "deepseek-chat",
-            "messages" => [
-                ["role" => "user", "content" => 'Summarize ' . $book->getTitle() . ' Book by ' . $book->getAuthor() . ' published at ' . $book->getPublishedYear()]
-            ],
-            "stream" => false
-        ];
+    static function getSummary(Book $book) {
+        if (!$book) {
+            return ['error' => 'no book'];
+        }
 
-        $ch = curl_init($url);
+        $apiKey = getenv("GEMINI_API_KEY");
+        $query = 'Summarize ' . $book->getTitle() . ' Book by ' . $book->getAuthor() . ' published at ' . $book->getPublishedYear();
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer $apiKey",
-            "Content-Type: application/json"
-        ]);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postVar));
+        try {
 
-        $data = curl_exec($ch);
-        $curl_errno = curl_errno($ch);
-        $curl_error = curl_error($ch);
+            $client = new Client($apiKey);
+            $response = $client->generativeModel(ModelName::GEMINI_PRO)->generateContent(
+                new TextPart($query),
+            );
 
-        curl_close($ch);
-        return $data;
+            $summary = $response->text();
+
+            return $summary;
+        } catch (Exception $ex) {
+            return ['error' => $ex->getMessage()];
+        }
     }
 }
-
-/*curl https://api.deepseek.com/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-1cd9ea00e1b74f1ca02c83d9769fc06e" \
-  -d '{
-        "model": "deepseek-chat",
-        "messages": [
-          {"role": "system", "content": "You are a helpful assistant."},
-          {"role": "user", "content": "Hello!"}
-        ],
-        "stream": false
-      }'*/
-
-/*curl https://api.openai.com/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $OPENAI_API_KEY" \
-  -d '{
-  "model": "gpt-4o",
-  "messages": [
-    {
-      "role": "user",
-      "content": 'Summarize ' . $book->getTitle() . ' Book by ' . $book->getAuthor() . ' published at ' . $book->getPublishedYear()
-    }
-  ],
-  "temperature": 1,
-  "max_tokens": 1024,
-  "top_p": 1
-}'*/

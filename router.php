@@ -12,6 +12,15 @@ class Router {
 
     public function addRoute(string $method, string $url, closure $target) {
         $this->routes[$method][$url] = $target;
+
+        //setting env variable
+        $env = file_get_contents(".env");
+        $lines = explode("\n",$env);
+
+        foreach($lines as $line){
+          preg_match("/([^#]+)\=(.*)/",$line,$matches);
+          if(isset($matches[2])){ putenv(trim($line)); }
+        }
     }
 
     public function matchRoute() {

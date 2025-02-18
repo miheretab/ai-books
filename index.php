@@ -136,9 +136,10 @@ $router->addRoute('POST', '/api/books/generate-summary', function () {
 
     //here generate with the help of AI
     $summary = AI::getSummary($book);
-    /*$summary = DeepSeekClient::build('sk-1cd9ea00e1b74f1ca02c83d9769fc06e')
-        ->query('Summarize ' . $book->getTitle() . ' Book by ' . $book->getAuthor() . ' published at ' . $book->getPublishedYear())
-        ->run();*/
+    if (isset($summary['error'])) {
+        echo json_encode($summary['error']);
+        return;
+    }
 
     echo json_encode(["book" => $book->jsonSerialize(), "summary" => $summary]);
     return;

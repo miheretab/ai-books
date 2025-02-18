@@ -31,6 +31,10 @@ class Book {
     * add a book with $title, $author, $publishedYear
     */
     function add($title, $author, $publishedYear) {
+        if (filter_var($publishedYear, FILTER_VALIDATE_INT) === false) {//validate year integer
+            return;
+        }
+
         $this->id = Books::total() + 1;//incremental
         $this->title = $title;
         $this->author = $author;
@@ -42,6 +46,10 @@ class Book {
     * update the book with $title, $author, $publishedYear
     */
     function update($title, $author, $publishedYear) {
+        if (filter_var($publishedYear, FILTER_VALIDATE_INT) === false) {//validate year integer
+            return;
+        }
+
         $this->title = $title;
         $this->author = $author;
         $this->publishedYear = $publishedYear;
