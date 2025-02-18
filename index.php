@@ -1,6 +1,6 @@
 <?php
 
-include_once "Router.php";
+include_once "router.php";
 include_once "src/Book.php";
 include_once "src/Books.php";
 include_once "src/AI.php";
