@@ -1,10 +1,9 @@
 <?php
 
-use DeepSeek\DeepSeekClient;
-include_once "router.php";
-include_once "Book.php";
-include_once "Books.php";
-include_once "AI.php";
+include_once "Router.php";
+include_once "src/Book.php";
+include_once "src/Books.php";
+include_once "src/AI.php";
 
 $router = new Router();
 

@@ -68,7 +68,7 @@ class Router {
 
     public function handleLoginRequest($input)
     {
-        if (isset($input['username']) && isset($input['password'])) {//you can check password validity using hash here if it is DB
+        if (isset($input['username']) && isset($input['password'])) {//you can also check username/password validity using hash here if it is DB
             $token = $this->generateToken($input['username']);
             echo json_encode(['token' => $token, 'expires in' => $this->tokenExpiryTime]);
         } else {

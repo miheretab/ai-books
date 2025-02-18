@@ -1,8 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-include_once 'Book.php';
-include_once 'Books.php';
+
+include_once './src/Book.php';
+include_once './src/Books.php';
 
 class BookTest extends TestCase {
 
