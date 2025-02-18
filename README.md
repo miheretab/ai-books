@@ -1,7 +1,7 @@
 # ai-books setup
 - I used PHP 8.1 version
 - You can put the whole folder or clone it inside any /var/www, so there shouldn't be any sub directory inorder the url to work.
-- create .env file and add GEMINI_API_KEY=[API_KEY]
+- create .env file and add `GEMINI_API_KEY=[API_KEY]` and also `SECRET_KEY=[SECRET_KEY]`
 - You need to have composer in command installed, then run `composer install` inorder to install necessary packages for unit testing and other
 
 # ai-books auth

@@ -6,13 +6,11 @@ use Firebase\JWT\Key;
 
 class Router {
     protected $routes = []; // stores routes
-    private $secretKey = 'your_secret_key'; // Replace with your actual secret key
-    private $allowed = ["/api/signup", "/api/login"];
+    private $secretKey = '';
+    private $allowed = ["/api/signup", "/api/login"];//alowed urls without authentication
     private $tokenExpiryTime = "2 hours";
 
-    public function addRoute(string $method, string $url, closure $target) {
-        $this->routes[$method][$url] = $target;
-
+    function __construct() {
         //setting env variable
         $env = file_get_contents(".env");
         $lines = explode("\n",$env);
@@ -21,8 +19,20 @@ class Router {
           preg_match("/([^#]+)\=(.*)/",$line,$matches);
           if(isset($matches[2])){ putenv(trim($line)); }
         }
+
+        $this->secretKey = getenv("SECRET_KEY");
     }
 
+    /**
+    * It helps to add a route
+    */
+    public function addRoute(string $method, string $url, closure $target) {
+        $this->routes[$method][$url] = $target;
+    }
+
+    /**
+    * It helps to match a route and return error or pass to the function
+    */
     public function matchRoute() {
         $method = $_SERVER['REQUEST_METHOD'];
         $url = $_SERVER['REQUEST_URI'];
@@ -44,6 +54,9 @@ class Router {
         echo json_encode(['message' => 'Route not found']);
     }
 
+    /**
+    * It will check request access is authenticated using valid token
+    */
     public function handleRequest() {
         $headers = apache_request_headers();
         
@@ -75,6 +88,9 @@ class Router {
         return false;
     }
 
+    /**
+    * It checks credentials and generate token
+    */
     public function handleLoginRequest($input)
     {
         if (isset($input['username']) && isset($input['password'])) {//you can also check username/password validity using hash here if it is DB
@@ -86,6 +102,9 @@ class Router {
         }
     }
 
+    /**
+    * generate token with expiry date with given $username
+    */
     private function generateToken($username)
     {
         $payload = [
