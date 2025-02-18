@@ -10,6 +10,9 @@ use GeminiAPI\Resources\Parts\TextPart;
 
 class AI {
     
+    /**
+    * this function return summary of a book with the help of GEMINI API
+    */
     static function getSummary(Book $book) {
         if (!$book) {
             return ['error' => 'no book'];

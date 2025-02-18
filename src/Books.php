@@ -49,6 +49,9 @@ class Books {
         return $booksJson;
     }
 
+    /**
+    * get the total number of books
+    */
     static function total() {
         return count(Books::$books);
     }
